@@ -2,12 +2,10 @@ import NoteModuleScss from "./Note.module.scss";
 import { useContext } from "react";
 import { OnBlurredFlagContext } from "./providers/OnBlurredFlagProvider";
 import { IsTextFlagContext } from "./providers/IsTextFlagProvider";
-import { TextBoxValueContext } from "./providers/TextBoxValueProvider";
 
-export const Note = () => {
+export const Note = (props) => {
   const { onBlurredFlag, setOnBlurredFlag } = useContext(OnBlurredFlagContext);
   const { isText, setIsTextFlag } = useContext(IsTextFlagContext);
-  const { textBoxValue, setTextBoxValue } = useContext(TextBoxValueContext);
 
   const checkIsText = (text) => {
     if (text.target.value != null) {
@@ -26,7 +24,6 @@ export const Note = () => {
       <input
         type="text"
         placeholder="タイトルを入力"
-        defaultValue={textBoxValue}
         className={NoteModuleScss.header}
         onBlur={() => setOnBlurredFlag(true)}
         onChange={(text) => {
