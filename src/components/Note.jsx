@@ -27,7 +27,7 @@ export const Note = (props) => {
     <div className={NoteModuleScss.below}>
       <input
         type="text"
-        placeholder="タイトルを入力"
+        placeholder={props.number}
         className={NoteModuleScss.header}
         onFocus={() => setOnBlurredFlag(false)}
         onBlur={() => setOnBlurredFlag(true)}
@@ -39,6 +39,7 @@ export const Note = (props) => {
       <textarea
         rows="4"
         cols="25"
+        placeholder={props.date}
         className={NoteModuleScss.body}
         onFocus={() => setOnBlurredFlag(false)}
         onBlur={() => setOnBlurredFlag(true)}
