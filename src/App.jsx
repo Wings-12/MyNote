@@ -24,44 +24,73 @@ export const App = () => {
 
   const setList = (value) => <Note key={value}></Note>;
 
+  // const makeNote = () => {
+  //   if (onBlurredFlag === true && isText === true) {
+  //     const new_keyIndex = keyIndex + 1;
+  //     () => {
+  //       return setKeyIndex(new_keyIndex);
+  //     }; // returnできてないから更新できない？
+  //     const new_keyList = [new_keyIndex, ...keyList];
+  //     () => {
+  //       return setKeyList(new_keyList);
+  //     }; // returnできてないから更新できない？
+
+  //     // これを
+  //     return new_keyList.map(setList);
+  //   }
+  //   return keyList.map(setList);
+  // };
+
+  const [counterForIf, setcounterForIf] = useState(0);
+  const [counterForNotIf, setcounterForNotIf] = useState(0);
+
+  // バグ修正中
   const makeNote = () => {
+    let new_keyList = [...keyList];
     if (onBlurredFlag === true && isText === true) {
       const new_keyIndex = keyIndex + 1;
       () => {
-        return setKeyIndex(new_keyIndex);
-      }; // returnできてないから更新できない？
-      const new_keyList = [new_keyIndex, ...keyList];
+        setKeyIndex(new_keyIndex);
+      };
+      new_keyList = [new_keyIndex, ...keyList];
       () => {
-        return setKeyList(new_keyList);
-      }; // returnできてないから更新できない？
+        setKeyList(new_keyList);
+      };
+
+      // 更新後
+      const new_counterForIf = counterForIf + 1; // カウントアップしてコンソールに何回処理が呼ばれているか確認しようと思ったが、useStateが更新されないので、確認できなかった。
+      () => {
+        setcounterForIf(new_counterForIf);
+      };
+      console.log("更新ありのnew_keyList" + new_counterForIf); // カウントアップしてコンソールに何回処理が呼ばれているか確認しようと思ったが、useStateが更新されないので、確認できなかった。
+      console.log(...new_keyList);
+      console.log(...keyList);
 
       // これを
       return new_keyList.map(setList);
     }
-    return keyList.map(setList);
+
+    // 更新なし
+    const new_counterForNotIf = counterForNotIf + 1;
+    () => {
+      setcounterForIf(new_counterForNotIf);
+    };
+    console.log("更新なしのnew_keyList" + counterForNotIf);
+    console.log(...new_keyList);
+    console.log(...keyList);
+
+    return new_keyList.map(setList);
   };
 
   const displayStyle = { display: "flex" };
 
-  const noteNumbers = [0, 1, 2, 3];
-  const noteDate = ["2000/01/01", "2000/02/02", "2020/03/03", "2020/04/04"];
-  const makeNoteList = () => {
-    return noteNumbers
-      .sort((a, b) => {
-        return a < b ? 1 : -1;
-      })
-      .map((noteNumber) => {
-        return <Note number={noteNumber} date={noteDate[noteNumber]}></Note>; // たぶんコンポーネント書き換えるのにuseState使わないと再レンダリングが起きなかったりするので、間違っている。
-      });
-  };
-
-  const noteList = makeNoteList();
-
+  // makeNoteの処理を後でNote.jsxの中で作って複製するように作る。また、下のreturn文の通り<Note></Note>だけここは書く　理由：以下の箇所でreturnするのは見ない書き方のため、バグっている可能性があるから。
   return (
     <Fragment>
       <Header></Header>
       {/* {makeNote()} */}
-      <div style={displayStyle}>{noteList}</div>
+      <Note></Note>
+      {/* <div style={displayStyle}>{noteList}</div> */}
       {/* <SelectionSortButton dataToSort={noteList}></SelectionSortButton> */}
       <Footer></Footer>
     </Fragment>
